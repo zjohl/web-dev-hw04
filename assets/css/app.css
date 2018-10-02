@@ -1,0 +1,42 @@
+/* This file is for your main application css. */
+
+@import "~milligram/dist/milligram";
+
+.column > p {
+    padding-top: 10ex;
+    text-align: center;
+}
+
+
+.tiles {
+    display: grid;
+    grid-template-rows: repeat(4, 1fr);
+    grid-template-columns: repeat(4, 1fr);
+    grid-column-gap: 1em;
+    grid-row-gap: 2em;
+}
+
+.tile {
+    width: 100px;
+    height: 100px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.tile.hidden .tile-content {
+    display: none;
+}
+
+.tile.active {
+    background-color: #90C3D4;
+}
+
+.tile.inactive {
+    background-color: #D4A190;
+}
+
+.restart-button {
+    margin-top: 20px;
+    background-color: #C390D4;
+}
