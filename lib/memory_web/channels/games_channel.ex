@@ -26,9 +26,11 @@ defmodule MemoryWeb.GamesChannel do
     {:reply, {:ok, %{ "game" => Game.client_view(game)}}, socket}
   end
 
-  def handle_in("restart", socket) do
+  def handle_in("restart", nil, socket) do
+    name = socket.assigns[:name]
     game = Game.restart()
     socket = assign(socket, :game, game)
+    BackupAgent.put(name, game)
     {:reply, {:ok, %{ "game" => Game.client_view(game)}}, socket}
   end
 
