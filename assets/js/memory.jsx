@@ -15,6 +15,7 @@ class Memory extends React.Component {
         this.channel = props.channel;
 
         this.state = {
+            allowClicks: true,
             numTiles: 16,
             numClicks: 0,
             visibleTiles: [],
@@ -28,10 +29,22 @@ class Memory extends React.Component {
 
     receiveView(view) {
         this.setState(view.game);
+        if(this.state.visibleTiles.length === 2) {
+            this.setState({allowClicks: false});
+            setTimeout(() => {
+                this.setState({allowClicks: true, visibleTiles: []});
+            }, 1000);
+        }
+    }
+
+    canClick(clickedTile) {
+        return this.state.allowClicks &&
+        !_.find(this.state.inactiveTiles, tile => {return tile.index === clickedTile.index}) &&
+        ! _.find(this.state.inactiveTiles, tile => {return tile.index === clickedTile.index})
     }
 
     onTileClick(clickedTile) {
-        if (!_.find(this.state.inactiveTiles, tile => {return tile.index === clickedTile.index}) && ! _.find(this.state.inactiveTiles, tile => {return tile.index === clickedTile.index})) {
+        if (this.canClick(clickedTile)) {
             this.channel.push("click", { index: clickedTile.index}).receive("ok", this.receiveView.bind(this));
         }
     }
