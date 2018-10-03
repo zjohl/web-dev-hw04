@@ -1,3 +1,10 @@
-<div id="root">
-  React app loading...
+<div>
+  <div class="row">
+    <div class="col">
+      <h1>Join a Game</h1>
+      <p><input type="text" id="game-input"></p>
+      <p><button id="game-button">Join Game</button></p>
+      <p id="game-output"></p>
+    </div>
+  </div>
 </div>

@@ -15,4 +15,5 @@
     </main>
     <script type="text/javascript" src="<%= Routes.static_url(@conn, "/js/app.js") %>"></script>
   </body>
+   <script>window.userToken = "<%= assigns[:user_token] %>";</script>
 </html>
