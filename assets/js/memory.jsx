@@ -42,14 +42,24 @@ class Memory extends React.Component {
         return this.state.visibleTiles.size === this.state.numTiles;
     }
 
+    findValue(index) {
+        if(_.map(this.state.inactiveTiles, 'index').includes(index)) {
+            return _.find(this.state.inactiveTiles, tile => {return tile.index === index})['value'];
+        } else if (_.map(this.state.visibleTiles, 'index').includes(index)) {
+            return _.find(this.state.visibleTiles, tile => {return tile.index === index})['value'];
+        } else {
+            return "?";
+        }
+    }
+
     renderTiles() {
         let tiles = [];
         for(let i = 0; i < this.state.numTiles; i++) {
             tiles = tiles.concat({
-                active: !_(this.state.inactiveTiles).map(tile => {return tile.index}).includes(i),
-                visible: _(this.state.inactiveTiles).map(tile => {return tile.index}).includes(i),
+                active: !_.map(this.state.inactiveTiles, 'index').includes(i),
+                visible: _.map(this.state.visibleTiles, 'index').includes(i),
                 index: i,
-                value: "?",
+                value: this.findValue(i),
             })
         }
 

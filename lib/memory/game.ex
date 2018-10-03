@@ -36,7 +36,20 @@ defmodule Memory.Game do
 
   def visible_tiles(game, index) do
     if Enum.empty?(game.visibleTiles) do
-      get_tile(game, index)
+      [get_tile(game, index)]
+    else
+      []
+    end
+  end
+
+  def inactive_tiles(game, index) do
+    clicked_tile = get_tile(game, index)
+    visible_tile = Enum.take(game.visibleTiles, 1)
+
+    if (clicked_tile.value == visible_tile.value) do
+      Enum.append(game.inactive_tiles, clicked_tile, visible_tile)
+    else
+      game.inactive_tiles
     end
   end
 
@@ -45,7 +58,8 @@ defmodule Memory.Game do
       raise "That's not a real tile"
     end
 
-    Map.put(game, :numClicks, game.numClicks + 1)
+    new_game = Map.put(game, :numClicks, game.numClicks + 1)
+    new_game = Map.put(new_game, :visibleTiles, visible_tiles(game, index))
   end
 
   def new_game do
