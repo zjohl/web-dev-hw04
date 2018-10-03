@@ -20,7 +20,12 @@ defmodule Memory.Game do
   end
 
   def client_view(game) do
-    game
+    %{
+      tiles: game.tiles,
+      numClicks: game.numClicks,
+      visibleTiles: game.visibleTiles,
+      inactiveTiles: game.inactiveTiles,
+    }
   end
 
   def get_tile(game, index) do

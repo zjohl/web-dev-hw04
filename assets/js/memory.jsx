@@ -27,7 +27,7 @@ class Memory extends React.Component {
     }
 
     receiveView(view) {
-        this.setState(view);
+        this.setState(view.game);
     }
 
     onTileClick(tile) {
