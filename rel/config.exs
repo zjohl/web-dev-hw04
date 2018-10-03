@@ -39,7 +39,7 @@ end
 environment :prod do
   set include_erts: true
   set include_src: false
-  set cookie: cookie2
+  set cookie: cookie
   set vm_args: "rel/vm.args"
 end
 
@@ -48,7 +48,7 @@ end
 # when running `mix release`, the first release in the file
 # will be used by default
 
-release :memory do
+release :memory2 do
   set version: current_version(:memory)
   set applications: [
     :runtime_tools
