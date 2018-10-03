@@ -30,8 +30,10 @@ class Memory extends React.Component {
         this.setState(view.game);
     }
 
-    onTileClick(tile) {
-        this.channel.push("click", { index: tile.index}).receive("ok", this.receiveView.bind(this));
+    onTileClick(clickedTile) {
+        if (!_.find(this.state.inactiveTiles, tile => {return tile.index === clickedTile.index}) && ! _.find(this.state.inactiveTiles, tile => {return tile.index === clickedTile.index})) {
+            this.channel.push("click", { index: clickedTile.index}).receive("ok", this.receiveView.bind(this));
+        }
     }
 
     restart() {
@@ -39,7 +41,7 @@ class Memory extends React.Component {
     }
 
     hasWon() {
-        return this.state.visibleTiles.size === this.state.numTiles;
+        return this.state.inactiveTiles.size === this.state.numTiles;
     }
 
     findValue(index) {
@@ -65,7 +67,7 @@ class Memory extends React.Component {
 
         return _.map(tiles, tile => {
             let stateClass = tile.active ? "active" : "inactive";
-            let visibleClass = tile.visible ? "" : " hidden";
+            let visibleClass = tile.visible || !tile.active ? "" : " hidden";
             let classes = "tile " + stateClass + visibleClass;
             return <div key={tile.index} className={classes} onClick={() => this.onTileClick(tile)}><div className="tile-content">{tile.value}</div></div>;
         });

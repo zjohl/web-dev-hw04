@@ -21,7 +21,6 @@ defmodule Memory.Game do
 
   def client_view(game) do
     %{
-      tiles: game.tiles,
       numClicks: game.numClicks,
       visibleTiles: game.visibleTiles,
       inactiveTiles: game.inactiveTiles,
@@ -35,21 +34,29 @@ defmodule Memory.Game do
   end
 
   def visible_tiles(game, index) do
-    if Enum.empty?(game.visibleTiles) do
-      [get_tile(game, index)]
-    else
-      []
+    clicked_tile = get_tile(game, index)
+    cond do
+      (length(game.visibleTiles) == 2)->
+        [clicked_tile]
+      (length(game.visibleTiles) == 1) ->
+        Enum.concat(game.visibleTiles, [clicked_tile])
+      true ->
+        [clicked_tile]
     end
   end
 
   def inactive_tiles(game, index) do
-    clicked_tile = get_tile(game, index)
-    visible_tile = Enum.take(game.visibleTiles, 1)
+    if (length(game.visibleTiles) == 2) do
+      visible_tile1 = Enum.at(game.visibleTiles, 0)
+      visible_tile2 = Enum.at(game.visibleTiles, 1)
 
-    if (clicked_tile.value == visible_tile.value) do
-      Enum.append(game.inactive_tiles, clicked_tile, visible_tile)
+      if (visible_tile1.value == visible_tile2.value) do
+        Enum.concat(game.inactiveTiles, [visible_tile1, visible_tile2])
+      else
+        game.inactiveTiles
+      end
     else
-      game.inactive_tiles
+      game.inactiveTiles
     end
   end
 
@@ -60,6 +67,7 @@ defmodule Memory.Game do
 
     new_game = Map.put(game, :numClicks, game.numClicks + 1)
     new_game = Map.put(new_game, :visibleTiles, visible_tiles(game, index))
+    Map.put(new_game, :inactiveTiles, inactive_tiles(new_game, index))
   end
 
   def new_game do
