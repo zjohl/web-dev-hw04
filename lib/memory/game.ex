@@ -19,6 +19,15 @@ defmodule Memory.Game do
     }
   end
 
+  def restart do
+    %{
+      tiles: new_game(),
+      numClicks: 0,
+      visibleTiles: [],
+      inactiveTiles: [],
+    }
+  end
+
   def client_view(game) do
     %{
       numClicks: game.numClicks,
@@ -38,7 +47,7 @@ defmodule Memory.Game do
     cond do
       (length(game.visibleTiles) == 2)->
         [clicked_tile]
-      (length(game.visibleTiles) == 1) ->
+      (length(game.visibleTiles) == 1 && Enum.at(game.visibleTiles, 0).index != clicked_tile.index) ->
         Enum.concat(game.visibleTiles, [clicked_tile])
       true ->
         [clicked_tile]
